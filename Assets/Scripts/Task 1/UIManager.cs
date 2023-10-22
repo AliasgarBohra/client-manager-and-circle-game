@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
     }
     private IEnumerator Start()
     {
-        Debug.Log("Getting Data");
+        Debug.Log("Getting Data..");
         waitTime = new WaitForSeconds(itemSpawnTime);
         yield return new WaitUntil(() => !WebRequestHandler.Instance.isGettingData);
 
