@@ -1,12 +1,15 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class WebRequestHandler : MonoBehaviour
 {
     public static WebRequestHandler Instance;
+
+    [SerializeField] private TextMeshProUGUI loadingDataText;
 
     public bool isGettingData { get; private set; } = false;
 
@@ -23,6 +26,7 @@ public class WebRequestHandler : MonoBehaviour
 
     private IEnumerator GetClientsData()
     {
+        loadingDataText.text = "Loading Data...";
         isGettingData = true;
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
@@ -37,12 +41,14 @@ public class WebRequestHandler : MonoBehaviour
 
                 Root dataObject = JsonConvert.DeserializeObject<Root>(jsonString);
                 UIManager.Instance.clientDataRoot = dataObject;
+
+                isGettingData = false;
             }
             else
             {
+                loadingDataText.text = "Error loading data!";
                 Debug.Log("Unable to fetch! " + webRequest.error + webRequest.downloadHandler.text);
             }
-            isGettingData = false;
         }
     }
 }
